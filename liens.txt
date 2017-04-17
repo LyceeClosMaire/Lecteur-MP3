@@ -1,0 +1,3 @@
+http://www.pygame.org/docs/ref/music.html
+
+http://www.pygame.org/news.html
