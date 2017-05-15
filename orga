@@ -10,41 +10,57 @@ from mutagen.mp3 import MP3
 from mutagen.easyid3 import EasyID3
 
 
-
-
-def set_filename():
+def set_filename(): #fonction parcourir
     chemin = StringVar(fenetre)
     chemin = askopenfilename(filetypes=FILETYPES)
     pygame.mixer.music.load(chemin)
     pygame.mixer.music.play()
 
 
+def Volume() : #fonction gestion du volume
+    fenetre.after(1,Volume)     #1 ms entre les changements de son
+    vol1 = Boutonvolume.get()    #Prendre la valeur du Volume
+    pygame.mixer.music.set_volume(vol1/100)  #Donne la valeur a la variable vol
+    
+
+def txtArtist(): #mise en place d'un label affichant le nom de l'artiste joué
+    audio = EasyID3(musique)
+    artiste = audio['artist'][0]
+    artist=Label(fenetre,text=artiste,bg='#FFFFFF')
+    artist.place(x=185,y=155)
+
+def txtTitle(): #mise en place d'un label affichant le titre joué
+    audio = EasyID3(musique)
+    titre = audio['title'][0]
+    title=Label(fenetre,text=titre,bg='#FFFFFF')
+    title.place(x=380,y=155)
+    
+def Mute(): #definition de la commande mute
+    Boutonvolume.set(0)
+    
+def step(): #définition de la fonction step permettant de gérer la barre de progression
+    progress.set(pygame.mixer.music.get_pos() / audio.info.length /10 )
+    fenetre.after(50, step)
+
 
 FILETYPES = [ ("Fichiers musicaux", "*.mp3") ]
 
 
-
-
-
-
-#lancement de la musique prédéfinie au lancement du programme
-musique = '1.mp3'
+musique = '1.mp3' #lancement de la musique prédéfinie au lancement du programme
 pygame.mixer.init()
 pygame.mixer.music.load(musique)
 pygame.mixer.music.play()
 
 
-#définition de la variable audio pour la barre de progression
-audio = MP3(musique)
+audio = MP3(musique) #définition de la variable audio pour la barre de progression
 
 
-#configuration de la fenêtre
-fenetre = Tk()
+fenetre = Tk() #configuration de la fenêtre
 fenetre.geometry("600x200+600+400")
 fenetre.title("Lecteur MP3")
 
-#Pour mettre l'image de fond
-fond = PhotoImage(file="fond.png")
+
+fond = PhotoImage(file="fond.png") #Pour mettre l'image de fond
 Largeur = 600
 Hauteur = 200
 Canevas1 = Canvas(fenetre,width = Largeur, height =Hauteur)
@@ -52,38 +68,7 @@ item1 = Canevas1.create_image(0,0,anchor=NW, image=fond)
 Canevas1.place(x=0,y=0)
 
 
-#définition de le gestion du volume
-def Volume() :
-    fenetre.after(1,Volume)     #1 ms entre les changements de son
-    vol1 = Boutonvolume.get()    #Prendre la valeur du Volume
-    pygame.mixer.music.set_volume(vol1/100)  #Donne la valeur a la variable vol
-
-fenetre.after(100,Volume) # on met le volume a 100 au début
-
-#definition de la commande mute
-def Mute():
-    Boutonvolume.set(0)
-
-#mise en place d'un label affichant le nom de l'artiste joué
-def txtArtist():
-
-    audio = EasyID3(musique)
-    artiste = audio['artist'][0]
-    artist=Label(fenetre,text=artiste,bg='#FFFFFF')
-    artist.place(x=185,y=155)
-
-txtArtist()
-
-#mise en place d'un label affichant le titre joué
-def txtTitle():
-    audio = EasyID3(musique)
-    titre = audio['title'][0]
-    title=Label(fenetre,text=titre,bg='#FFFFFF')
-    title.place(x=380,y=155)
-
-txtTitle()
-
-
+fenetre.after(100,Volume) #réglage du volume sur 100
 
 
 #Mise en place du contrôle du volume
@@ -149,13 +134,9 @@ progress = IntVar(0)
 barre = ttk.Progressbar(fenetre,orient=HORIZONTAL, length=250,maximum = 100, mode='determinate',variable = progress)
 barre.place(x=185,y=178)
 
-#définition de la fonction step permettant de gérer la barre de progression
-def step():
-    progress.set(pygame.mixer.music.get_pos() / audio.info.length /10 )
-    fenetre.after(50, step)
-
 step()
-
+txtTitle()
+txtArtist()
 
 fenetre.mainloop()
 pygame.mixer.quit()
