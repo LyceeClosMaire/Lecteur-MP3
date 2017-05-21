@@ -1,0 +1,167 @@
+import os
+from tkinter.filedialog import askdirectory
+from pygame import mixer
+import pygame
+from mutagen.id3 import ID3
+from tkinter import *
+from tkinter import ttk
+
+
+fenetre = Tk()
+#configuration de la fenêtre
+
+fenetre.geometry("600x200+600+400")
+fenetre.title("Lecteur MP3")
+
+#Pour mettre l'image de fond
+fond = PhotoImage(file="fond.png")
+Largeur = 600
+Hauteur = 200
+Canevas1 = Canvas(fenetre,width = Largeur, height =Hauteur)
+item1 = Canevas1.create_image(0,0,anchor=NW, image=fond)
+Canevas1.place(x=0,y=0)
+
+
+
+
+
+listofsongs = []
+realnames = []
+
+v = StringVar()
+songlabel = Label(fenetre, textvariable=v)
+songlabel.pack(side = TOP, padx = 155 ,pady = 30)
+
+
+songlabel = Label(fenetre,textvariable=v)
+
+index = 0
+
+def directorychooser():
+
+    directory = askdirectory()
+    os.chdir(directory)
+
+    for files in os.listdir(directory):
+        if files.endswith(".mp3"):
+
+            realdir = os.path.realpath(files)
+            audio = ID3(realdir)
+            realnames.append(audio['TIT2'].text[0])
+
+
+            listofsongs.append(files)
+
+
+    pygame.mixer.init()
+    pygame.mixer.music.load(listofsongs[0])
+    #pygame.mixer.music.play()
+
+directorychooser()
+
+def updatelabel():
+    global index
+    global songname
+    v.set(realnames[index])
+    #return songname
+
+
+
+def nextsong():
+    global index
+    index += 1
+    pygame.mixer.music.load(listofsongs[index])
+    pygame.mixer.music.play()
+    updatelabel()
+
+def prevsong():
+    global index
+    index -= 1
+    pygame.mixer.music.load(listofsongs[index])
+    pygame.mixer.music.play()
+    updatelabel()
+
+#Mise en place du contrôle du volume
+texte=Label(fenetre,text="Volume",bg='#FFFFFF')
+texte.place(x=15,y=160)
+
+
+title=Label(fenetre,text=v,bg='#FFFFFF')
+title.place(x=390,y=155)
+
+
+
+
+#Mise en place du bouton pause
+boutonPause = Button(fenetre,command=mixer.music.pause,height = 40, width = 40)
+boutonPause.place(x='278',y='70')
+pause = PhotoImage(file = 'PAUSE.png')
+boutonPause.config(image= pause)
+
+#Mise en place du bouton Play
+boutonPlay = Button(fenetre,command = mixer.music.unpause, height = 40, width = 40)
+boutonPlay.place(x='228',y='70')
+play= PhotoImage(file='PLAY.png')
+boutonPlay.config(image=play)
+
+
+#Mise en place du bouton Arriere/début
+boutonDebut = Button(fenetre, command = prevsong, height = 40, width = 40)
+boutonDebut.place(x='178',y='70')
+debut= PhotoImage(file='PRECEDENT.png')
+boutonDebut.config(image=debut)
+
+
+#Mise en place du bouton Stop
+boutonStop = Button(fenetre, command = mixer.music.stop, height = 40, width = 40)
+boutonStop.place(x='327',y='70')
+stop = PhotoImage(file='STOP.png')
+boutonStop.config(image=stop)
+
+
+#Mise en place du bouton Suivant
+boutonSuivant = Button(fenetre,command = nextsong, height = 40, width = 40)
+boutonSuivant.place(x='378',y='70')
+suivant=PhotoImage(file='SUIVANT.png')
+boutonSuivant.config(image=suivant)
+
+
+#définition de le gestion du volume
+def Volume() :
+    fenetre.after(1,Volume)     #1 ms entre les changements de son
+    vol1 = Boutonvolume.get()    #Prendre la valeur du Volume
+    pygame.mixer.music.set_volume(vol1/100)  #Donne la valeur a la variable vol
+
+fenetre.after(100,Volume) # on met le volume a 100 au début
+
+
+
+
+
+def Mute():
+    Boutonvolume.set(0)
+
+#Mise en place de la gestion du volume
+Boutonvolume = Scale(fenetre, from_=100, to=0,fg='white', bg='black')
+Boutonvolume.set(100)
+Boutonvolume.place(x=15,y=50)
+
+#Mise en place du bouton Mute
+BoutonMute = Button(fenetre, command = Mute, height=30, width=30)
+BoutonMute.place(x=20,y=8)
+mute=PhotoImage(file='MUTE.png')
+BoutonMute.config(image=mute)
+
+
+
+
+#listofsongs.reverse()
+realnames.reverse()
+
+
+realnames.reverse()
+#listofsongs.reverse()
+
+
+fenetre.mainloop()
+pygame.mixer.quit()
