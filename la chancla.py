@@ -24,8 +24,10 @@ listofsongs = []
 realnames = []
 
 v = StringVar()
-title=Label(fenetre,text=v,bg='#FFFFFF')
-title.place(x=390,y=155)
+songlabel = Label(fenetre, textvariable=v)
+songlabel.place(x=390,y=155)
+
+songlabel = Label(fenetre,textvariable=v,width=35)
 
 index = 0
 
@@ -132,7 +134,7 @@ BoutonMute.place(x=20,y=8)
 mute=PhotoImage(file='MUTE.png')
 BoutonMute.config(image=mute)
 
-
+songlabel.pack()
 
 #listofsongs.reverse()
 realnames.reverse()
@@ -140,7 +142,7 @@ realnames.reverse()
 
 realnames.reverse()
 #listofsongs.reverse()
-
 
 
 fenetre.mainloop()
+pygame.mixer.quit()
