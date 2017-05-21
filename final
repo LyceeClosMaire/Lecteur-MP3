@@ -25,15 +25,6 @@ FILETYPES = [ ("Fichiers musicaux", "*.mp3") ]
 
 
 
-
-
-#lancement de la musique prédéfinie au lancement du programme
-musique = '1.mp3'
-pygame.mixer.init()
-pygame.mixer.music.load(musique)
-pygame.mixer.music.play()
-
-
 #définition de la variable audio pour la barre de progression
 audio = MP3(musique)
 
