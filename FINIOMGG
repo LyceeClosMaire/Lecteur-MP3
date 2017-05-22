@@ -63,7 +63,7 @@ def updatelabel(): #fonction de mise à jour du label du titre
     global index
     global songname
     v.set(realnames[index])
-    
+
 
 
 
@@ -106,10 +106,10 @@ boutonPlay.config(image=play)
 
 
 #Mise en place du bouton Arriere/début
-boutonDebut = Button(fenetre, command = prevsong, height = 40, width = 40)
-boutonDebut.place(x='178',y='70')
-debut= PhotoImage(file='PRECEDENT.png')
-boutonDebut.config(image=debut)
+boutonPrecedent = Button(fenetre, command = prevsong, height = 40, width = 40)
+boutonPrecedent.place(x='178',y='70')
+precedent= PhotoImage(file='PRECEDENT.png')
+boutonPrecedent.config(image=precedent)
 
 
 #Mise en place du bouton Stop
