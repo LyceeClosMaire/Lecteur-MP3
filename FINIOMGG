@@ -2,7 +2,7 @@ import os
 from tkinter.filedialog import askdirectory
 from pygame import mixer
 import pygame
-from mutagen.id3 import ID3
+from mutagen.id3 import ID3 #importation des bibliothèques
 from tkinter import *
 from tkinter import ttk
 from mutagen.mp3 import MP3
@@ -21,23 +21,23 @@ Hauteur = 200
 Canevas1 = Canvas(fenetre,width = Largeur, height =Hauteur)
 item1 = Canevas1.create_image(0,0,anchor=NW, image=fond)
 Canevas1.place(x=0,y=0)
-audio = MP3("samples.mp3")
 
 
+audio = MP3("samples.mp3") #fichier d'initialisation de la barre de progression
 
+
+#créattion des listes dans lesquelles on va placer les musiques
 listofsongs = []
 realnames = []
 
-v = StringVar("")
+v = StringVar("") # mise en place du label du titre de la musique
 songlabel = Label(fenetre, textvariable=v)
 songlabel.pack(side = TOP, padx = 155 ,pady = 30)
 
 
-songlabel = Label(fenetre,textvariable=v)
-
 index = 0
 
-def directorychooser():
+def choixdudossier():
 
     directory = askdirectory()
     os.chdir(directory)
@@ -57,17 +57,17 @@ def directorychooser():
     pygame.mixer.music.load(listofsongs[0])
     #pygame.mixer.music.play()
 
-directorychooser()
+choixdudossier()
 
-def updatelabel():
+def updatelabel(): #fonction de mise à jour du label du titre
     global index
     global songname
     v.set(realnames[index])
-    #return songname
+    
 
 
 
-def nextsong():
+def nextsong(): #fonction pour passer à la musique suivante
     global index
     global audio
     index += 1
@@ -76,7 +76,7 @@ def nextsong():
     pygame.mixer.music.play()
     updatelabel()
 
-def prevsong():
+def prevsong(): #fonction pour passer à la musique précédente
     global index
     index -= 1
     pygame.mixer.music.load(listofsongs[index])
@@ -137,7 +137,7 @@ fenetre.after(100,Volume) # on met le volume a 100 au début
 
 
 
-def Mute():
+def Mute(): #fonction mise en sourdine
     Boutonvolume.set(0)
 
 #Mise en place de la gestion du volume
@@ -151,7 +151,7 @@ BoutonMute.place(x=20,y=8)
 mute=PhotoImage(file='MUTE.png')
 BoutonMute.config(image=mute)
 
-#Mise en place de la bare de progression
+#Mise en place de la barre de progression
 progress = IntVar(0)
 barre = ttk.Progressbar(fenetre,orient=HORIZONTAL, length=245,maximum = 100, mode='determinate',variable = progress)
 barre.place(x=180,y=170)
@@ -163,13 +163,6 @@ def step():
 
 step()
 
-
-#listofsongs.reverse()
-realnames.reverse()
-
-
-realnames.reverse()
-#listofsongs.reverse()
 
 
 fenetre.mainloop()
