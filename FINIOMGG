@@ -53,7 +53,7 @@ def choixdudossier():
 
     pygame.mixer.init()
     pygame.mixer.music.load(listofsongs[0])
-    #pygame.mixer.music.play()
+    
 
 choixdudossier()
 
