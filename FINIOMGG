@@ -7,8 +7,8 @@ from tkinter import *
 from tkinter import ttk
 from mutagen.mp3 import MP3
 
-fenetre = Tk()
 #configuration de la fenêtre
+fenetre = Tk()
 fenetre.geometry("600x200+600+400")
 fenetre.title("Lecteur MP3")
 
